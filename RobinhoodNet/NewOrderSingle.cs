@@ -47,21 +47,22 @@ namespace BasicallyMe.RobinhoodNet
 
         public decimal? Price { get; set; }
 
-        public NewOrderSingle()
+        public NewOrderSingle ()
         {
             TimeInForce = TimeInForce.GoodForDay;
-            Side        = Side.Buy;
-            Trigger     = "immediate";
-            OrderType   = OrderType.Limit;
+            Side = Side.Buy;
+            Trigger = "immediate";
+            OrderType = OrderType.Limit;
         }
 
-        public NewOrderSingle(Instrument instrument) : this()
+        public NewOrderSingle (Instrument instrument)
+            : this()
         {
-            Symbol        = instrument.Symbol;
+            Symbol = instrument.Symbol;
             InstrumentUrl = instrument.InstrumentUrl;
         }
 
-        internal IDictionary<string, string> ToDictionary()
+        internal IDictionary<string, string> ToDictionary ()
         {
             var d = new Dictionary<string, string>();
             d.Add("account", this.AccountUrl.ToString());

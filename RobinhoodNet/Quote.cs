@@ -23,32 +23,50 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace BasicallyMe.RobinhoodNet
 {
 	public class Quote
 	{
+        [JsonProperty("symbol")]
         public string Symbol { get; set; }
 
+        [JsonProperty("ask_price")]
         public decimal AskPrice { get; set; }
+
+        [JsonProperty("ask_size")]
         public int     AskSize  { get; set; }
 
+        [JsonProperty("bid_price")]
         public decimal BidPrice { get; set; }
+
+        [JsonProperty("bid_size")]
         public int     BidSize  { get; set; }
 
+        [JsonProperty("last_traded_price")]
         public decimal  LastTradePrice { get; set; }
+
+        [JsonProperty("last_extended_hours_trade_price")]
         public decimal? LastExtendedHoursTradePrice { get; set; }
 
+        [JsonProperty("previous_close")]
         public decimal PreviousClose { get; set; }
+
+        [JsonProperty("adjusted_previous_close")]
         public decimal AdjustedPreviousClose { get; set; }
 
+        [JsonProperty("previous_close_date")]
         public DateTime PreviousCloseDate { get; set; }
 
+        [JsonProperty("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
-        public bool TradingHalted { get; set; }
+        [JsonProperty("trading_halted")]
+        public bool IsTradingHalted { get; set; }
 
+        [JsonIgnore]
         public decimal Change
         {
             get
@@ -61,43 +79,12 @@ namespace BasicallyMe.RobinhoodNet
             }
         }
 
+        [JsonIgnore]
         public decimal ChangePercentage
         {
             get
             {
                 return 100 * this.Change;
-            }
-        }
-
-        public Quote ()
-        {
-        }
-
-        internal Quote (JToken json)
-        {
-            this.Symbol = (string)json["symbol"];
-
-            this.AskPrice = (decimal)json["ask_price"];
-            this.AskSize = (int)json["ask_size"];
-
-            this.BidPrice  = (decimal)json["ask_price"];
-            this.BidSize  = (int)json["ask_size"];
-
-            this.LastTradePrice = (decimal)json["ask_price"];
-
-            this.PreviousClose = (decimal)json["ask_price"];
-            this.AdjustedPreviousClose = (decimal)json["ask_price"];
-
-            this.PreviousCloseDate = (DateTime)json["previous_close_date"];
-
-            this.UpdatedAt = (DateTime)json["updated_at"];
-
-            this.TradingHalted = (bool)json["trading_halted"];
-
-            var v = json["last_extended_hours_trade_price"];
-            if (v != null)
-            {
-                this.LastExtendedHoursTradePrice = (decimal?)v;
             }
         }
 	}

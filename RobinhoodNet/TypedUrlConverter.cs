@@ -1,17 +1,17 @@
 // The MIT License (MIT)
-// 
+//
 // Copyright (c) 2015 Filip Frącz
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,31 +27,30 @@ using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
-    public class Balance
-    {
-        [JsonProperty("created_at")]
-        public DateTime CreatedAt                           { get; set; }
 
-        [JsonProperty("updated_at")]
-        public DateTime UpdatedAt                           { get; set; }
+    public class TypedUrlConverter<T> : JsonConverter
+	{
+        
+        public override void WriteJson (JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            writer.WriteValue(value.ToString());
+        }
 
-        [JsonProperty("cash_held_for_orders")]
-        public decimal CashHeldForOrders                    { get; set; }        
+        public override object ReadJson (JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var str = reader.Value.ToString();
+            return new Url<T>(str);
+        }
 
-        [JsonProperty("cash")]
-        public decimal Cash                                 { get; set; }
+        public override bool CanConvert (Type objectType)
+        {
+            return (
+                objectType == typeof(string) ||
+                objectType == typeof(Uri) ||
+                objectType == typeof(Url<T>)
+            );
+        }
+	}
 
-        [JsonProperty("buying_power")]
-        public decimal BuyingPower                          { get; set; }        
 
-        [JsonProperty("cash_available_for_withdrawal")]
-        public decimal CashAvailableForWithdrawal           { get; set; }
-
-        [JsonProperty("uncleared_deposits")]
-        public decimal UnclearedDeposits                    { get; set; }
-
-        [JsonProperty("unsettled_funds")]
-        public decimal UnsettledFunds                       { get; set; }
-    }
-    
 }
