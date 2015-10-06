@@ -23,23 +23,20 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
 
     public class Execution
     {
+        [JsonProperty("timestamp")]
         public DateTime TimeStamp { get; set; }
+
+        [JsonProperty("price")]
         public decimal  Price { get; set; }
+
+        [JsonProperty("quantity")]
         public int      Quantity { get; set; }
-
-        public Execution() { }
-
-        internal Execution(Newtonsoft.Json.Linq.JToken json)
-        {
-            this.TimeStamp = (DateTime)json["timestamp"];
-            this.Price     = (decimal)json["price"];
-            this.Quantity  = (int)(decimal)json["quantity"];
-        }
     }
 }
