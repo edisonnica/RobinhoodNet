@@ -2,13 +2,14 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using System.Linq;
+using System.Net.Http;
+using System.Net;
 
 namespace BasicallyMe.RobinhoodNet.Raw
 {
     public partial class RawRobinhoodClient
     {
-        System.Net.Http.HttpClient _httpClient;
+        HttpClient _httpClient;
 
         static readonly string LOGIN_URL = "https://api.robinhood.com/api-token-auth/";
         static readonly string INVESTMENT_PROFILE_URL = "https://api.robinhood.com/user/investment_profile/";
@@ -33,7 +34,14 @@ namespace BasicallyMe.RobinhoodNet.Raw
 
         public RawRobinhoodClient ()
         {
-            _httpClient = new System.Net.Http.HttpClient();
+            var handler = new HttpClientHandler();
+            if (handler.SupportsAutomaticDecompression)
+            {
+                handler.AutomaticDecompression = DecompressionMethods.GZip |
+                                                 DecompressionMethods.Deflate;
+            }
+
+            _httpClient = new HttpClient(handler);
             _httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
             _httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
             _httpClient.DefaultRequestHeaders.Add(
@@ -48,35 +56,35 @@ namespace BasicallyMe.RobinhoodNet.Raw
 
 
         async Task<JToken>
-        parseJsonResponse (Task<System.Net.Http.HttpResponseMessage> response)
+        parseJsonResponse (Task<HttpResponseMessage> response)
         {
             var r = await response;
             r.EnsureSuccessStatusCode();
             string content = await r.Content.ReadAsStringAsync();
-
+            
             JObject result = JObject.Parse(content);
             return result;
         }
 
-        Task<System.Net.Http.HttpResponseMessage>
+        Task<HttpResponseMessage>
         doPost_NativeResponse (Uri uri, IEnumerable<KeyValuePair<string, string>> pairs = null)
         {
-            System.Net.Http.HttpContent content = null;
+            HttpContent content = null;
             if (pairs != null)
             {
-                content = new System.Net.Http.FormUrlEncodedContent(pairs);
+                content = new FormUrlEncodedContent(pairs);
             }
 
             return _httpClient.PostAsync(uri, content);
         }
 
-        Task<System.Net.Http.HttpResponseMessage>
+        Task<HttpResponseMessage>
         doPost_NativeResponse (string uri, IEnumerable<KeyValuePair<string, string>> pairs = null)
         {
-            System.Net.Http.HttpContent content = null;
+            HttpContent content = null;
             if (pairs != null)
             {
-                content = new System.Net.Http.FormUrlEncodedContent(pairs);
+                content = new FormUrlEncodedContent(pairs);
             }
 
             return _httpClient.PostAsync(uri, content);
