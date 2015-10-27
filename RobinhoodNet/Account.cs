@@ -74,8 +74,7 @@ namespace BasicallyMe.RobinhoodNet
         public Url<Account> AccountUrl { get; set; }
 
         [JsonProperty("positions")]
-        [JsonConverter(typeof(TypedUrlConverter<AccountPositions
-                              >))]
+        [JsonConverter(typeof(TypedUrlConverter<AccountPositions>))]
         public Url<AccountPositions> PositionsUrl { get; set; }
 
         [JsonProperty("account_number")]

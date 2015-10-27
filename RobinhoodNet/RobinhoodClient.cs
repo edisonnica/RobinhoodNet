@@ -108,7 +108,10 @@ namespace BasicallyMe.RobinhoodNet
         public Task<PagedResponse<OrderSnapshot>>
         DownloadOrders (PagedResponse<OrderSnapshot>.Cursor cursor = null)
         {
-            return downloadPagedResult<OrderSnapshot>(cursor, _rawClient.DownloadOrders, json => new OrderSnapshot(json));
+            return downloadPagedResult<OrderSnapshot>(
+                cursor,
+                _rawClient.DownloadOrders,
+                json => json.ToObject<OrderSnapshot>());
         }
 
 
@@ -116,7 +119,7 @@ namespace BasicallyMe.RobinhoodNet
         PlaceOrder (NewOrderSingle newOrderSingle)
         {
             var json = await _rawClient.PlaceOrder(newOrderSingle.ToDictionary());
-            return new OrderSnapshot(json);
+            return json.ToObject<OrderSnapshot>();
         }
 
         public Task

@@ -1,17 +1,17 @@
 // The MIT License (MIT)
-// 
+//
 // Copyright (c) 2015 Filip Frącz
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,165 +23,84 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
-
-    public enum TimeInForce
-    {
-        Unknown,
-        GoodTillCancel,
-        GoodForDay
-    }
-
-    public enum Side
-    {
-        Buy,
-        Sell
-    }
-
-    public enum OrderType
-    {
-        Unknown,
-        Limit,
-        Market
-    }
-
-    
-
     public class OrderSnapshot
     {
+        [JsonProperty("cumulative_quantity")]
         public decimal CumulativeQuantity { get; set; }
 
+        [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }
 
+        [JsonProperty("account")]
         public string AccountId { get; set; }
 
+        [JsonProperty("stop_price")]
         public decimal? StopPrice { get; set; }
 
+        [JsonProperty("reject_reason")]
         public string RejectReason { get; set; }
 
+        [JsonProperty("url")]
         public string OrderId { get; set; }
 
+        [JsonProperty("average_price")]
         public decimal? AveragePrice { get; set; }
 
+        [JsonProperty("time_in_force")]
+        [JsonConverter(typeof(TimeInForceConverter))]
         public TimeInForce TimeInForce { get; set; }
 
+        [JsonProperty("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
+        [JsonProperty("price")]
         public decimal? Price { get; set; }
 
+        [JsonProperty("instrument")]
         public string InstrumentId { get; set; }
 
+        [JsonProperty("state")]
         public string State { get; set; }
 
+        [JsonProperty("trigger")]
         public string Trigger { get; set; }
 
+        [JsonProperty("last_transaction_at")]
         public DateTime LastTransactionAt { get; set; }
 
+        [JsonProperty("fees")]
         public decimal Fees { get; set; }
 
+        [JsonProperty("cancel")]
+        [JsonConverter(typeof(TypedUrlConverter<OrderCancellation>))]
         public Url<OrderCancellation> CancelUrl { get; set; }
 
         // TODO: Wrap position
+        [JsonProperty("position")]
+        [JsonConverter(typeof(TypedUrlConverter<Position>))]
         public Url<Position> PositionUrl { get; set; }
 
+        [JsonProperty("executions")]
         public IList<Execution> Executions { get; private set; }
 
+        [JsonProperty("type")]
+        [JsonConverter(typeof(OrderTypeConverter))]
         public OrderType Type { get; set; }
 
+        [JsonProperty("side")]
+        [JsonConverter(typeof(SideConverter))]
         public Side Side { get; set; }
 
+        [JsonProperty("quantity")]
         public int Quantity { get; set; }
 
         public OrderSnapshot ()
         {
             this.Executions = new List<Execution>();
         }
-
-        internal OrderSnapshot (Newtonsoft.Json.Linq.JToken json) : this()
-        {
-            this.CumulativeQuantity = (decimal)json["cumulative_quantity"];
-            this.CreatedAt = (DateTime)json["created_at"];
-            this.AccountId = (string)json["account"];
-            this.StopPrice = (decimal?)json["stop_price"];
-            this.RejectReason = (string)json["reject_reason"];
-            this.OrderId = (string)json["url"];
-            this.AveragePrice = (decimal?)json["average_price"];
-
-            this.TimeInForce = parseTif((string)json["time_in_force"]);
-
-
-            this.UpdatedAt = (DateTime)json["updated_at"];
-            this.Price = (decimal?)json["price"];
-            this.InstrumentId = (string)json["instrument"];
-            this.State = (string)json["state"];
-            this.Trigger = (string)json["trigger"];
-            this.LastTransactionAt = (DateTime)json["last_transaction_at"];
-            this.Fees = (decimal)json["fees"];
-
-            string url = (string)json["cancel"];
-            this.CancelUrl = url != null ? new Url<OrderCancellation>(url) : null;
-
-            url = (string)json["position"];
-            this.PositionUrl = url != null ? new Url<Position>(url) : null;
-
-            foreach (var e in (Newtonsoft.Json.Linq.JArray)json["executions"])
-            {
-                this.Executions.Add(e.ToObject<Execution>());
-            }
-
-            this.Type = parseOrderType((string)json["type"]);
-            this.Side = parseSide((string)json["side"]);
-            this.Quantity = (int)(decimal)json["quantity"];
-        }
-
-        static TimeInForce parseTif (string tif)
-        {
-            TimeInForce result = 0;
-
-            if (tif.Equals("gfd", StringComparison.OrdinalIgnoreCase))
-            {
-                result = TimeInForce.GoodForDay;
-            }
-            else if (tif.Equals("gtc", StringComparison.OrdinalIgnoreCase))
-            {
-                result = TimeInForce.GoodTillCancel;
-            }
-
-            return result;
-        }
-
-        static OrderType parseOrderType (string type)
-        {
-            OrderType result = 0;
-
-            if (type.Equals("limit", StringComparison.OrdinalIgnoreCase))
-            {
-                result = OrderType.Limit;
-            }
-            else if (type.Equals("market", StringComparison.OrdinalIgnoreCase))
-            {
-                result = OrderType.Market;
-            }
-
-            return result;
-        }
-
-        static Side parseSide (string side)
-        {
-            Side result = 0;
-
-            if (side.Equals("buy", StringComparison.OrdinalIgnoreCase))
-            {
-                result = Side.Buy;
-            }
-            else if (side.Equals("sell", StringComparison.OrdinalIgnoreCase))
-            {
-                result = Side.Sell;
-            }
-
-            return result;
-        }       
     }
 }
