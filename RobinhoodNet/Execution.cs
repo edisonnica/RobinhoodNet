@@ -37,6 +37,6 @@ namespace BasicallyMe.RobinhoodNet
         public decimal  Price { get; set; }
 
         [JsonProperty("quantity")]
-        public int      Quantity { get; set; }
+        public decimal  Quantity { get; set; }
     }
 }
