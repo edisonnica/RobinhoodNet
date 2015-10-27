@@ -29,7 +29,7 @@ namespace BasicallyMe.RobinhoodNet
 {
 
     public class TypedUrlConverter<T> : JsonConverter
-	{        
+    {
         public override void WriteJson (JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WriteValue(value.ToString());
