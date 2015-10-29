@@ -55,11 +55,12 @@ namespace BasicallyMe.RobinhoodNet
         }
 
         async Task<IList<TResult>>
-        downloadAll<TResult>(Func<PagedResponse<TResult>.Cursor, Task<PagedResponse<TResult>>> downloadSingle)
+        downloadAll<TResult>(
+            Func<Url<TResult>, Task<PagedResponse<TResult>>> downloadSingle,
+            Url<TResult> cursor = null)
         {
             var all = new List<TResult>();
 
-            PagedResponse<TResult>.Cursor cursor = null;
             PagedResponse<TResult> r = null;
             do
             {
@@ -74,7 +75,7 @@ namespace BasicallyMe.RobinhoodNet
 
         async Task<PagedResponse<TResult>>
         downloadPagedResult<TResult> (
-            PagedResponse<TResult>.Cursor cursor,
+            Url<TResult> cursor,
             Func<string, Task<JToken>> downloader,
             Func<JToken, TResult> decoder)
         {
@@ -90,13 +91,33 @@ namespace BasicallyMe.RobinhoodNet
         }
 
         public Task<PagedResponse<Account>>
-        DownloadAccounts(PagedResponse<Account>.Cursor cursor = null)
+        DownloadAccounts (Url<Account> cursor = null)
         {
             return downloadPagedResult<Account>(
                 cursor,
                 _rawClient.DownloadAccounts,
                 json => json.ToObject<Account>());
         }
+
+
+
+        public Task<IList<Position>>
+        DownloadAllAccountPositions (Url<Position> accountPositionUrl)
+        {
+            return downloadAll<Position>(
+                this.DownloadAccountPositions,
+                accountPositionUrl);
+        }
+
+        public Task<PagedResponse<Position>>
+        DownloadAccountPositions (Url<Position> accountPositionUrl)
+        {
+            return downloadPagedResult<Position>(
+                accountPositionUrl,
+                _rawClient.DownloadAccountPositions,
+                json => json.ToObject<Position>());
+        }
+
 
 
         public Task<IList<OrderSnapshot>>
@@ -106,7 +127,7 @@ namespace BasicallyMe.RobinhoodNet
         }
 
         public Task<PagedResponse<OrderSnapshot>>
-        DownloadOrders (PagedResponse<OrderSnapshot>.Cursor cursor = null)
+        DownloadOrders (Url<OrderSnapshot> cursor = null)
         {
             return downloadPagedResult<OrderSnapshot>(
                 cursor,
@@ -133,14 +154,48 @@ namespace BasicallyMe.RobinhoodNet
         DownloadInstrument (Url<Instrument> instrumentUrl)
         {
             var json = await _rawClient.DownloadInstrument(instrumentUrl.Uri.ToString());
-            return new Instrument(json);
+            return json.ToObject<Instrument>();
         }
+
+        public async Task<InstrumentFundamentals>
+        DownloadInstrumentFundamentals (string symbol)
+        {
+            var json = await _rawClient.DownloadInstrumentFundamentalsForSymbol(symbol);
+            return json.ToObject<InstrumentFundamentals>();
+        }
+
+        public async Task<InstrumentFundamentals>
+        DownloadInstrumentFundamentals (Url<InstrumentFundamentals> url)
+        {
+            var json = await _rawClient.DownloadInstrumentFundamentalsForUrl(url.Uri.ToString());
+            return json.ToObject<InstrumentFundamentals>();
+        }
+
+
+        public Task<IList<InstrumentSplit>>
+        DownloadAllInstrumentSplits (Url<InstrumentSplit> splitsUrl)
+        {
+            return downloadAll<InstrumentSplit>(
+                this.DownloadInstrumentSplits,
+                splitsUrl);
+        }
+
+        public Task<PagedResponse<InstrumentSplit>>
+        DownloadInstrumentSplits (Url<InstrumentSplit> splitsUrl)
+        {
+            return downloadPagedResult<InstrumentSplit>(
+                splitsUrl,
+                _rawClient.DownloadOrders,
+                json => json.ToObject<InstrumentSplit>());
+        }
+
+
 
         public async Task<IList<Instrument>>
         FindInstrument (string symbol)
         {
             var resp = await _rawClient.FindInstrument(symbol);
-            var result = new PagedJsonResponse<Instrument>(resp, item => new Instrument(item));
+            var result = new PagedJsonResponse<Instrument>(resp, item => item.ToObject<Instrument>());
             return result.Items;
         }
 

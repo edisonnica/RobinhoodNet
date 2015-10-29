@@ -23,11 +23,87 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
-	// TODO: Implement me!
     public class Position
-	{
-	}
+    {
+        [JsonProperty("account")] //"": "https://api.robinhood.com/accounts/5QR41236/",
+        public Url<Account> AccountUrl
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("intraday_quantity")] //: "0.0000",
+        public decimal IntradayQuantity
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("shares_held_for_sells")] //: "5.0000",
+        public decimal SharesHeldForSells
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("url")] //: "https://api.robinhood.com/accounts/5QR41236/positions/f74acd18-c8a1-4851-abd3-7b6e82d0cbce/",
+        public Url<Position> PositionUrl
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("created_at")] //: "2015-10-23T15:32:33.886255Z",
+        public DateTime CreatedAt
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("updated_at")] //: "2015-10-23T16:31:36.949434Z",
+        public DateTime UpdatedAt
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("cost_basis")] //: "90.5000",
+        public decimal CostBasis
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("average_buy_price")] //: "18.1000",
+        public decimal AverageBuyPrice
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("instrument")] //: "https://api.robinhood.com/instruments/f74acd18-c8a1-4851-abd3-7b6e82d0cbce/",
+        public Url<Instrument> InstrumentUrl
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("shares_held_for_buys")] //: "0.0000",
+        public decimal SharesHeldForBuys
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("quantity")] //: "5.0000"
+        public decimal Quantity
+        {
+            get;
+            set;
+        }
+    }
 }

@@ -23,10 +23,95 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace BasicallyMe.RobinhoodNet
 {
 	public class InstrumentFundamentals
-	{
+	{        
+        [JsonProperty("open")] //: "103.9000",
+        public decimal Open
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("high")] //: "104.4800",
+        public decimal High
+        {
+            get;
+            set;
+        }
+            
+        [JsonProperty("low")] //: "102.9200",
+        public decimal Low
+        {
+            get;
+            set;
+        }
+
+
+        [JsonProperty("volume")] //: "24081515.0000",
+        public decimal Volume
+        {
+            get;
+            set;
+        }
+
+
+        [JsonProperty("average_volume")] //: "28043669.7610",
+        public decimal AverageVolume
+        {
+            get;
+            set;
+        }
+
+
+        [JsonProperty("high_52_weeks")] //: "104.4800",
+        public decimal High52Weeks
+        {
+            get;
+            set;
+        }
+
+
+        [JsonProperty("dividend_yield")] //: "0.0000",
+        public decimal DividendYield
+        {
+            get;
+            set;
+        }
+
+
+        [JsonProperty("low_52_weeks")] //: "72.0000",
+        public decimal Low52Weeks
+        {
+            get;
+            set;
+        }
+
+
+        [JsonProperty("market_cap")] //: "292008780000.0000",
+        public decimal MarketCap
+        {
+            get;
+            set;
+        }
+
+
+        [JsonProperty("pe_ratio")] //: "105.8900",
+        public decimal PeRatio
+        {
+            get;
+            set;
+        }
+
+
+        [JsonProperty("description")] //: "Facebook, Inc. is a social networking service and website. Its website allows people to communicate with their family, friends, and coworkers. The company offers advertisers a combination of reach, relevance, social context, and engagement to enhance the value of their ads. Its services include timeline, news feed, messages, lists, ticker and mobile apps. Facebook was founded by Mark Elliot Zuckerberg, Dustin Moskovitz, Chris R. Hughes, Andrew McCollum and Eduardo P. Saverin on February 4, 2004 and is headquartered in Menlo Park, CA."
+        public string Description
+        {
+            get;
+            set;
+        }
 	}
 }
