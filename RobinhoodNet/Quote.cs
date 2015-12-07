@@ -80,13 +80,13 @@ namespace BasicallyMe.RobinhoodNet
             this.AskPrice = (decimal)json["ask_price"];
             this.AskSize = (int)json["ask_size"];
 
-            this.BidPrice  = (decimal)json["ask_price"];
-            this.BidSize  = (int)json["ask_size"];
+            this.BidPrice = (decimal)json["bid_price"];
+            this.BidSize = (int)json["bid_size"];
 
-            this.LastTradePrice = (decimal)json["ask_price"];
+            this.LastTradePrice = (decimal)json["last_trade_price"];
 
-            this.PreviousClose = (decimal)json["ask_price"];
-            this.AdjustedPreviousClose = (decimal)json["ask_price"];
+            this.PreviousClose = (decimal)json["previous_close"];
+            this.AdjustedPreviousClose = (decimal)json["adjusted_previous_close"];
 
             this.PreviousCloseDate = (DateTime)json["previous_close_date"];
 
