@@ -23,8 +23,9 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace BasicallyMe.RobinhoodNet
 {
@@ -63,7 +64,7 @@ namespace BasicallyMe.RobinhoodNet
             PagedResponse<TResult> r = null;
             do
             {
-                r = await downloadSingle(cursor);
+              r = await downloadSingle(cursor).ConfigureAwait(continueOnCapturedContext: false); 
                 all.AddRange(r.Items);
                 cursor = r.Next;
 
@@ -78,9 +79,27 @@ namespace BasicallyMe.RobinhoodNet
             Func<string, Task<JToken>> downloader,
             Func<JToken, TResult> decoder)
         {
-            var resp = await downloader(cursor == null ? null : cursor.Uri.ToString());
+          var resp = await downloader(cursor == null ? null : cursor.Uri.ToString()).ConfigureAwait(continueOnCapturedContext: false); ;
             var result = new PagedJsonResponse<TResult>(resp, decoder);
             return result;
+        }
+
+        public IList<Position>
+          DownloadPositions(string url, PagedResponse<Position>.Cursor cursor = null)
+        {
+          cursor = new PagedResponse<Position>.Cursor(url);
+          List<Position> list = new List<Position>();
+          while(true)
+          {
+            var result = downloadPagedResult<Position>(cursor, _rawClient.DownloadPositions, json => new Position(json));
+            if (result.Result != null && result.Result.Items != null)
+              list.AddRange(result.Result.Items);
+            if (result.Result == null || result.Result.Next == null)
+              break;
+            cursor = result.Result.Next;
+          }
+          
+          return list;
         }
 
         public Task<IList<Account>>
@@ -143,6 +162,13 @@ namespace BasicallyMe.RobinhoodNet
         {
             var q = await _rawClient.DownloadQuote(symbol);
             return new Quote(q);
+        }
+
+        public async Task<Quote>
+          DownloadInstrument(string InstrumentURL)
+        {
+          var q = await _rawClient.DownloadInstrument(InstrumentURL);
+          return new Quote(q);
         }
 
         public async Task<IList<Quote>>

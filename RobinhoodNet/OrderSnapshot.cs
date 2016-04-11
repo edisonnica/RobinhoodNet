@@ -40,11 +40,18 @@ namespace BasicallyMe.RobinhoodNet
         Sell
     }
 
+    public enum TriggerType
+    {
+      Immediate,
+      Stop
+    }
+
     public enum OrderType
     {
         Unknown,
         Limit,
-        Market
+        Market,
+        StopLoss
     }
 
     
@@ -70,6 +77,24 @@ namespace BasicallyMe.RobinhoodNet
         public DateTime UpdatedAt { get; set; }
 
         public decimal? Price { get; set; }
+
+        public decimal? TotalNotional
+        {
+          get
+          {
+            decimal result = 0;
+            if (Executions != null)
+            {
+              foreach (Execution e in Executions)
+              {
+                result += (decimal)(e.Price * e.Quantity);
+              }
+            }
+
+            return result;
+          }
+
+        }
 
         public string InstrumentId { get; set; }
 

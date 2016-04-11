@@ -75,30 +75,42 @@ namespace BasicallyMe.RobinhoodNet
 
         internal Quote (JToken json)
         {
+          if(json["symbol"]!=null)
             this.Symbol = (string)json["symbol"];
 
+          if (json["ask_price"] != null)
             this.AskPrice = (decimal)json["ask_price"];
+          if (json["ask_size"] != null)
             this.AskSize = (int)json["ask_size"];
 
+          if (json["bid_price"] != null)
             this.BidPrice = (decimal)json["bid_price"];
+          if (json["bid_size"] != null)
             this.BidSize = (int)json["bid_size"];
 
+          if (json["last_trade_price"] != null)
             this.LastTradePrice = (decimal)json["last_trade_price"];
-
+          if (json["previous_close"] != null)
             this.PreviousClose = (decimal)json["previous_close"];
+          if (json["adjusted_previous_close"] != null)
             this.AdjustedPreviousClose = (decimal)json["adjusted_previous_close"];
 
+          if (json["previous_close_date"] != null)
             this.PreviousCloseDate = (DateTime)json["previous_close_date"];
 
+          if (json["updated_at"] != null)
             this.UpdatedAt = (DateTime)json["updated_at"];
-
+          if (json["trading_halted"] != null)
             this.TradingHalted = (bool)json["trading_halted"];
 
+          if (json["last_extended_hours_trade_price"] != null)
+          {
             var v = json["last_extended_hours_trade_price"];
             if (v != null)
             {
-                this.LastExtendedHoursTradePrice = (decimal?)v;
+              this.LastExtendedHoursTradePrice = (decimal?)v;
             }
+          }
         }
 	}
 
