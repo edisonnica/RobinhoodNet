@@ -37,7 +37,7 @@ namespace BasicallyMe.RobinhoodNet
 
         public TimeInForce TimeInForce { get; set; }
 
-        public string Trigger { get; set; }
+        public TriggerType Trigger { get; set; }
 
         public OrderType OrderType { get; set; }
 
@@ -47,11 +47,13 @@ namespace BasicallyMe.RobinhoodNet
 
         public decimal? Price { get; set; }
 
+        public decimal? StopPrice { get; set; }
+
         public NewOrderSingle()
         {
             TimeInForce = TimeInForce.GoodForDay;
             Side        = Side.Buy;
-            Trigger     = "immediate";
+            Trigger     = TriggerType.Immediate;
             OrderType   = OrderType.Limit;
         }
 
@@ -77,14 +79,19 @@ namespace BasicallyMe.RobinhoodNet
                 d.Add("time_in_force", "gtc");
             }
 
-            d.Add("trigger", this.Trigger);
+            d.Add("trigger", this.Trigger.ToString().ToLowerInvariant());
             d.Add("type", this.OrderType.ToString().ToLowerInvariant());
             d.Add("side", this.Side.ToString().ToLowerInvariant());
             d.Add("quantity", this.Quantity.ToString());
 
             if (this.Price.HasValue)
             {
-                d.Add("price", this.Price.Value.ToString());
+              d.Add("price", this.Price.Value.ToString());
+            }
+
+            if(this.StopPrice.HasValue)
+            {
+              d.Add("stop_price", this.StopPrice.Value.ToString());
             }
 
             return d;

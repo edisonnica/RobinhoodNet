@@ -26,8 +26,26 @@ using System.Collections.Generic;
 
 namespace BasicallyMe.RobinhoodNet
 {
-	// TODO: Implement me!
-    public class Position
-	{
-	}
+  public class Position
+  {
+
+    public DateTime UpdatedAt { get; set; }
+
+    public Url<Account> InstrumentUrl { get; set; }
+    public decimal AverageBuyPrice { get; set; }
+    public decimal Cash { get; set; }
+    public decimal Quantity { get; set; }
+    public Position()
+    {
+    }
+
+    internal Position(Newtonsoft.Json.Linq.JToken json)
+      : this()
+    {
+
+      InstrumentUrl = new Url<Account>((string)json["instrument"]);
+      AverageBuyPrice = (decimal)json["average_buy_price"];
+      Quantity = (decimal)json["quantity"];
+    }
+  }
 }

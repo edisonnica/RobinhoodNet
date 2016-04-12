@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25029.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobinhoodNet", "RobinhoodNet\RobinhoodNet.csproj", "{4E7B4836-04A8-47FD-A634-3F99CF388977}"
 EndProject
@@ -12,8 +12,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{10B7E5B5-1E62-40F9-BBEC-E269B4B919C9}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
-		README.txt = README.txt
 		README.md = README.md
+		README.txt = README.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EA457ABF-B964-4652-A2ED-B16BBEE5C14B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Global
@@ -22,10 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{07F0BC5F-D397-47CE-B7CE-20D2D38B2C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07F0BC5F-D397-47CE-B7CE-20D2D38B2C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07F0BC5F-D397-47CE-B7CE-20D2D38B2C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07F0BC5F-D397-47CE-B7CE-20D2D38B2C8E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E7B4836-04A8-47FD-A634-3F99CF388977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E7B4836-04A8-47FD-A634-3F99CF388977}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E7B4836-04A8-47FD-A634-3F99CF388977}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -34,8 +37,13 @@ Global
 		{77C1F305-3900-4C98-B0BC-BCA4A4671541}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77C1F305-3900-4C98-B0BC-BCA4A4671541}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77C1F305-3900-4C98-B0BC-BCA4A4671541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07F0BC5F-D397-47CE-B7CE-20D2D38B2C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07F0BC5F-D397-47CE-B7CE-20D2D38B2C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07F0BC5F-D397-47CE-B7CE-20D2D38B2C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07F0BC5F-D397-47CE-B7CE-20D2D38B2C8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
@@ -81,8 +89,5 @@ Global
 		$3.inheritsSet = Mono
 		$3.inheritsScope = text/x-csharp
 		$3.scope = text/x-csharp
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

@@ -1,9 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+
 using System.Net.Http;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace BasicallyMe.RobinhoodNet.Raw
 {
@@ -31,6 +32,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
         static readonly string DUCUMENT_REQUESTS_URL = "https://api.robinhood.com/upload/document_requests/";
         static readonly string USER_URL = "https://api.robinhood.com/user/";
         static readonly string WATCHLISTS_URL = "https://api.robinhood.com/watchlists/";
+        static string POSITIONS_URL;
 
         public RawRobinhoodClient ()
         {
@@ -58,7 +60,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
         async Task<JToken>
         parseJsonResponse (Task<HttpResponseMessage> response)
         {
-            var r = await response;
+              var r = await response;
             r.EnsureSuccessStatusCode();
             string content = await r.Content.ReadAsStringAsync();
             
