@@ -26,10 +26,12 @@ namespace BasicallyMe.RobinhoodNet.Raw
             var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
                 {
                     { "username", userName },
-                    { "password", password }
+                    { "password", password },
+                    { "grant_type", "password"},
+                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
                 });
 
-            this.AuthToken = auth["token"].ToString();
+            this.AuthToken = auth["access_token"].ToString();
         }
 
         public Task Authenticate (string token)
