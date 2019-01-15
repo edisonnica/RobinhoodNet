@@ -15,7 +15,7 @@ namespace BasicallyMe.RobinhoodNet.Raw
             {
                 _authToken = value;
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
-                    "Token",
+                    "Bearer",
                     _authToken);
             }
         }
