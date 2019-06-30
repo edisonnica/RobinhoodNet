@@ -45,9 +45,9 @@ namespace BasicallyMe.RobinhoodNet
         }
 
         public Task
-        Authenticate (string userName, string password)
+        Authenticate (string userName, string password, string client_id, string device_token)
         {
-            return _rawClient.Authenticate(userName, password);
+            return _rawClient.Authenticate(userName, password, client_id, device_token);
         }
 
         public Task Authenticate (string token)
@@ -194,6 +194,18 @@ namespace BasicallyMe.RobinhoodNet
         DownloadQuote (params string[] symbols)
         {
             return DownloadQuote((IEnumerable<string>)symbols);
+        }
+
+        // TODO add parameter, watchlist name
+        public Task<IList<WatchedInstrument>> DownloadAllWatchedInstruments()
+        {
+            return downloadAll<WatchedInstrument>(this.DownloadAWatchedInstruments);
+        }
+
+        public Task<PagedResponse<WatchedInstrument>>
+        DownloadAWatchedInstruments(PagedResponse<WatchedInstrument>.Cursor cursor = null)
+        {
+            return downloadPagedResult<WatchedInstrument>(cursor, _rawClient.DownloadWatchlist, json => new WatchedInstrument(json));
         }
     }
 }

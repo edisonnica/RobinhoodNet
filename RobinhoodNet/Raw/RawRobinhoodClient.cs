@@ -31,7 +31,8 @@ namespace BasicallyMe.RobinhoodNet.Raw
         static readonly string QUOTES_URL = "https://api.robinhood.com/quotes/";
         static readonly string DUCUMENT_REQUESTS_URL = "https://api.robinhood.com/upload/document_requests/";
         static readonly string USER_URL = "https://api.robinhood.com/user/";
-        static readonly string WATCHLISTS_URL = "https://api.robinhood.com/watchlists/";
+        //static readonly string WATCHLISTS_URL = "https://api.robinhood.com/watchlists/{NAME}/";
+        static readonly string WATCHLISTS_URL = "https://api.robinhood.com/watchlists/Default/";
         static string POSITIONS_URL;
 
         public RawRobinhoodClient ()
@@ -44,14 +45,21 @@ namespace BasicallyMe.RobinhoodNet.Raw
             }
 
             _httpClient = new HttpClient(handler);
+
             _httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
-            _httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
+            _httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
             _httpClient.DefaultRequestHeaders.Add(
                 "Accept-Language",
-                "en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5");
-            _httpClient.DefaultRequestHeaders.Add("X-Robinhood-API-Version", "1.0.0");
+                "en-US,en;q=0.5");
             _httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
-            _httpClient.DefaultRequestHeaders.Add("User-Agent", "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)");
+
+            _httpClient.DefaultRequestHeaders.Add("Host", "api.robinhood.com");
+            _httpClient.DefaultRequestHeaders.Add("Origin", "https://robinhood.com");
+            _httpClient.DefaultRequestHeaders.Add("Referer", "https://robinhood.com/");
+            _httpClient.DefaultRequestHeaders.Add("TE", "Trailers");
+
+            _httpClient.DefaultRequestHeaders.Add("X-Robinhood-API-Version", "1.275.0");
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0");
         }
 
 

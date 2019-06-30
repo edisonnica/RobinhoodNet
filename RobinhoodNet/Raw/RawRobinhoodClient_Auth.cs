@@ -20,16 +20,20 @@ namespace BasicallyMe.RobinhoodNet.Raw
             }
         }
 
-        public async Task 
-        Authenticate (string userName, string password)
+        public async Task
+        Authenticate(string userName, string password, string client_id, string device_token)
         {
             var auth = await doPost(LOGIN_URL, new Dictionary<string, string>
                 {
                     { "username", userName },
                     { "password", password },
                     { "grant_type", "password"},
-                    { "client_id", "c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS" },
-                });
+                    {"scope", "internal"},
+                    {"client_id", client_id},
+                    {"expires_in", "86400"},
+                    {"device_token", device_token},
+                }
+            );
 
             this.AuthToken = auth["access_token"].ToString();
         }
